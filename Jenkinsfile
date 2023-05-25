@@ -24,7 +24,7 @@ pipeline {
                 }
                 withSonarQubeEnv('SonarQube') {
                     sh 'printenv'
-                    sh "${scannerHome}/bin/sonar-scanner"
+                    sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=test"
                 }
             }
         }
