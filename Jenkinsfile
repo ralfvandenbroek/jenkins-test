@@ -23,6 +23,7 @@ pipeline {
                    scannerHome = tool 'SonarQubeScanner'
                 }
                 withSonarQubeEnv('SonarQube') {
+                    sh 'printenv'
                     sh "${scannerHome}/bin/sonar-scanner"
                 }
             }
