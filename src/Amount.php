@@ -24,7 +24,7 @@ class Amount
                 throw new DomainException("Incovertible currencies $currency and $other");
             }
         } else {
-            return 1;
+            return 2;
         }
     }
 }
