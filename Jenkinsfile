@@ -1,21 +1,23 @@
 pipeline {
     agent {
-        label '!windows'
-    }
-
-    environment {
-        DISABLE_AUTH = 'true'
-        DB_ENGINE    = 'sqlite'
-	FOO = credentials('TEST')
+        docker { image 'php:8.1.11-alpine' }
     }
 
     stages {
         stage('Build') {
             steps {
-                echo "Database engine is ${DB_ENGINE}"
-                echo "DISABLE_AUTH is ${DISABLE_AUTH}"
-                sh 'printenv'
+                sh 'php composer.phar install'
             }
+        }
+    stage('Test') {
+	steps {
+		sh 'vendor/bin/phpunit --log-junit report.xml'
+	}
+        }
+    }
+    post {
+        always {
+            junit 'report.xml'
         }
     }
 }
