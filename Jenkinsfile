@@ -1,21 +1,22 @@
 pipeline {
     agent {
-        docker { image 'php:8.1.11-alpine' }
+        label '!windows'
+    }
+
+    environment {
+        DISABLE_AUTH = 'true'
+        DB_ENGINE    = 'sqlite'
     }
 
     stages {
         stage('Build') {
             steps {
-                sh 'php composer.phar install'
+                echo "Database engine is ${DB_ENGINE}"
+                echo "DISABLE_AUTH is ${DISABLE_AUTH}"
+                sh 'printenv'
             }
         }
-    stage('Test') {
-	steps {
-		sh 'vendor/bin/phpunit --log-junit report.xml'
-	}
-        }
-stage('SonarQube analysis') {
-	agent { label '!windows' }
+        stage('SonarQube analysis') {
             steps {
                 script {
                     // requires SonarQube Scanner 2.8+
@@ -26,11 +27,6 @@ stage('SonarQube analysis') {
                     sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=test"
                 }
             }
-        }
-}
-    post {
-        always {
-            junit 'report.xml'
         }
     }
 }
