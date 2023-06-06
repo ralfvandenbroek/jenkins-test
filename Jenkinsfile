@@ -15,6 +15,18 @@ pipeline {
 	}
         }
     }
+stage('SonarQube analysis') {
+            steps {
+                script {
+                    // requires SonarQube Scanner 2.8+
+                   scannerHome = tool 'SonarQube Scanner'
+                }
+                withSonarQubeEnv('SonarQube') {
+                    sh 'printenv'
+                    sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=test"
+                }
+            }
+        }
     post {
         always {
             junit 'report.xml'
