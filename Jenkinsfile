@@ -15,6 +15,7 @@ pipeline {
 	}
         }
 stage('SonarQube analysis') {
+	agent { label '!windows' }
             steps {
                 script {
                     // requires SonarQube Scanner 2.8+
