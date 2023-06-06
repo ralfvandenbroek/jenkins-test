@@ -14,7 +14,6 @@ pipeline {
 		sh 'vendor/bin/phpunit --log-junit report.xml'
 	}
         }
-    }
 stage('SonarQube analysis') {
             steps {
                 script {
@@ -27,6 +26,7 @@ stage('SonarQube analysis') {
                 }
             }
         }
+}
     post {
         always {
             junit 'report.xml'
